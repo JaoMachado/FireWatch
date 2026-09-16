@@ -1,10 +1,12 @@
+import FireWatchLogo from "../assets/FireWatchLogo.png";
+
 export default function Footer() {
   return (
     <footer className="footer">
       <div className="container footer-content">
         <div>
           <div className="footer-logo">
-            <span>▲</span>
+            <img className="logo-image" src={FireWatchLogo} alt="FireWatch" />
             Fire<strong>Watch</strong>
           </div>
 

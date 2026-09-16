@@ -884,11 +884,15 @@ a {
 .footer-logo {
   font-size: 20px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .footer-logo span,
 .footer-logo strong {
   color: var(--orange);
+  margin-left: -5px;
 }
 
 .footer-content p {
