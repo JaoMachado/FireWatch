@@ -1,0 +1,27 @@
+import { Link } from "react-router-dom";
+import FireWatchLogo from "../assets/FireWatchLogo.png";
+
+export default function Navbar() {
+  return (
+    <header className="navbar">
+      <div className="container navbar-content">
+        <Link to="/" className="logo">
+          <img className="logo-image" src={FireWatchLogo} alt="FireWatch" />
+          Fire<span>Watch</span>
+        </Link>
+
+        <nav className="nav-links">
+          <a href="#problema">O problema</a>
+          <a href="#solucao">Solução</a>
+          <a href="#tecnologia">Tecnologia</a>
+          <a href="#impacto">Impacto</a>
+        </nav>
+
+        <Link to="/monitoramento" className="nav-button">
+          Ver demonstração
+          <span>→</span>
+        </Link>
+      </div>
+    </header>
+  );
+}
