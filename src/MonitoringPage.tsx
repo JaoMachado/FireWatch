@@ -15,7 +15,7 @@ export default function Monitoring() {
       <h1>Monitoramento FireWatch</h1>
 
       <p style={{ color: "#888" }}>
-        O dashboard será desenvolvido aqui.
+        A dashboard será desenvolvido aqui.
       </p>
 
       <Link to="/" className="secondary-button">

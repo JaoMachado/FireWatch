@@ -2,10 +2,16 @@ import { Link } from "react-router-dom";
 import FireWatchLogo from "../assets/FireWatchLogo.png";
 
 export default function Navbar() {
+
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+
   return (
     <header className="navbar">
       <div className="container navbar-content">
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={handleLogoClick}>
           <img className="logo-image" src={FireWatchLogo} alt="FireWatch" />
           Fire<span>Watch</span>
         </Link>
