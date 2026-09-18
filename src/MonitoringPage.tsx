@@ -279,7 +279,7 @@ export default function MonitoringPage() {
               <div className="dash-panel-header">
                 <h3>Feed de Alertas</h3>
               </div>
-
+ 
               <div className="alert-feed">
                 {alerts.map(alert => (
                   <div key={alert.id} className="alert-item" style={{
