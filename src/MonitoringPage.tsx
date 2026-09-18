@@ -42,57 +42,109 @@ export default function MonitoringPage() {
   ]);
 
   const [sensors, setSensors] = useState<SensorData[]>([
-    { id: 'S-01', name: 'Pico Norte', temp: 31.5, humidity: 21, status: 'atencao', x: '50%', y: '30%' },
-    { id: 'S-02', name: 'Vale Central', temp: 29.8, humidity: 25, status: 'normal', x: '35%', y: '60%' },
-    { id: 'S-03', name: 'Mirante SUL', temp: 30.1, humidity: 24, status: 'normal', x: '65%', y: '70%' },
+    {
+      id: 'S-01',
+      name: 'Mirante Serra da Paulista',
+      temp: 31.5,
+      humidity: 21,
+      status: 'atencao',
+      x: '61.5%',
+      y: '13%'
+    },
+    {
+      id: 'S-02',
+      name: 'Região Pedra Balão',
+      temp: 29.8,
+      humidity: 25,
+      status: 'normal',
+      x: '56%',
+      y: '81%'
+    },
+    {
+      id: 'S-03',
+      name: 'Pesqueiro Bambu Amarelo',
+      temp: 30.1,
+      humidity: 24,
+      status: 'normal',
+      x: '30.5%',
+      y: '47%'
+    },
+    {
+      id: 'S-04',
+      name: 'Capelinha Nossa Senhora',
+      temp: 30.8,
+      humidity: 22,
+      status: 'normal',
+      x: '40%',
+      y: '58%'
+    },
+    {
+      id: 'S-05',
+      name: 'Vinicola Lanchellotti',
+      temp: 29.5,
+      humidity: 21,
+      status: 'normal',
+      x: '43%',
+      y: '22%'
+    },
+    {
+      id: 'S-05',
+      name: 'Cruz Cruzeiro do Sul',
+      temp: 32.1,
+      humidity: 23,
+      status: 'normal',
+      x: '65%',
+      y: '48%'
+    },
   ]);
 
   // Controle de passos da simulação (0 = Normal, 1 = Foco inicial, 2 = Vento espalha, 3 = Crítico)
   const [simStep, setSimStep] = useState(0);
 
-  // Função para a demonstração na banca
-  // Função para a demonstração na banca
   // Função passo a passo para a demonstração na banca
   const triggerEmergency = () => {
     if (simStep === 0) {
-      // FASE 1: Início da anomalia térmica no Pico Norte
-      setClimate({ temp: 34.5, humidity: 18, wind: 25, risk: 'MUITO ALTO' });
-      setSensors(prev => prev.map(s => s.id === 'S-01' ? { ...s, temp: 38.0, status: 'critico' } : s));
+      // FASE 1: Fogo começa na parte alta (Vinícola Lancellotti e Mirante)
+      setClimate({ temp: 35.2, humidity: 18, wind: 28, risk: 'MUITO ALTO' });
+      setSensors(prev => prev.map(s => (s.id === 'S-01' || s.id === 'S-05') ? { ...s, temp: 41.5, status: 'critico' } : s));
       setAlerts(prev => [
-        { id: Date.now(), location: 'Pico Norte (Setor 1)', time: 'AGORA', message: 'ALERTA: Anomalia térmica isolada detectada.' },
+        { id: Date.now(), location: 'Setor Norte (Vinícola/Mirante)', time: 'AGORA', message: 'ALERTA: Foco de calor extremo detectado na região alta.' },
         ...prev
       ]);
       setSimStep(1);
-
+      
     } else if (simStep === 1) {
-      // FASE 2: Vento aumenta e espalha para o Vale Central
-      setClimate({ temp: 36.8, humidity: 15, wind: 35, risk: 'EXTREMO' });
-      setSensors(prev => prev.map(s => s.id === 'S-02' ? { ...s, temp: 37.2, status: 'critico' } : s));
+      // FASE 2: Vento empurra o calor para o Centro-Oeste (Capelinha e Bambu Amarelo)
+      setClimate({ temp: 37.8, humidity: 14, wind: 38, risk: 'EXTREMO' });
+      setSensors(prev => prev.map(s => (s.id === 'S-03' || s.id === 'S-04') ? { ...s, temp: 39.8, status: 'critico' } : s));
       setAlerts(prev => [
-        { id: Date.now(), location: 'Vale Central (Setor 2)', time: 'AGORA', message: 'CRÍTICO: Foco secundário provocado por rajadas de vento (35km/h).' },
+        { id: Date.now(), location: 'Setor Central (Capelinha/Bambu)', time: 'AGORA', message: 'CRÍTICO: Incêndio alastrando rapidamente devido aos ventos (38km/h).' },
         ...prev
       ]);
       setSimStep(2);
-
+      
     } else if (simStep === 2) {
-      // FASE 3: Alastramento total chegando no Mirante Sul
-      setClimate({ temp: 38.5, humidity: 12, wind: 45, risk: 'EXTREMO' });
-      setSensors(prev => prev.map(s => s.id === 'S-03' ? { ...s, temp: 35.1, status: 'atencao' } : s));
+      // FASE 3: Cenário crítico atingindo a Pedra Balão e o Cruzeiro do Sul
+      setClimate({ temp: 39.5, humidity: 11, wind: 45, risk: 'EXTREMO' });
+      setSensors(prev => prev.map(s => ({ ...s, temp: +(s.temp + 3.5).toFixed(1), status: 'critico' })));
       setAlerts(prev => [
-        { id: Date.now(), location: 'MÚLTIPLOS SETORES', time: 'AGORA', message: 'EMERGÊNCIA GERAL: Fogo em alastramento. Evacuação recomendada.' },
+        { id: Date.now(), location: 'SERRA DA PAULISTA (GERAL)', time: 'AGORA', message: 'EMERGÊNCIA: Perda de controle. Múltiplos sensores em temperatura máxima!' },
         ...prev
       ]);
       setSimStep(3);
-
+      
     } else {
-      // RESET: Volta tudo ao normal se clicar de novo
+      // RESET: Volta aos 6 sensores normais (Note que ajustei o ID do último para S-06)
       setClimate({ temp: 31.2, humidity: 22, wind: 18, risk: 'ALTO' });
       setSensors([
-        { id: 'S-01', name: 'Pico Norte', temp: 31.5, humidity: 21, status: 'atencao', x: '50%', y: '30%' },
-        { id: 'S-02', name: 'Vale Central', temp: 29.8, humidity: 25, status: 'normal', x: '35%', y: '60%' },
-        { id: 'S-03', name: 'Mirante SUL', temp: 30.1, humidity: 24, status: 'normal', x: '65%', y: '70%' },
+        { id: 'S-01', name: 'Mirante Serra da Paulista', temp: 31.5, humidity: 21, status: 'atencao', x: '61.5%', y: '13%' },
+        { id: 'S-02', name: 'Região Pedra Balão', temp: 29.8, humidity: 25, status: 'normal', x: '56%', y: '81%' },
+        { id: 'S-03', name: 'Pesqueiro Bambu Amarelo', temp: 30.1, humidity: 24, status: 'normal', x: '30.5%', y: '47%' },
+        { id: 'S-04', name: 'Capelinha Nossa Senhora', temp: 30.8, humidity: 22, status: 'normal', x: '40%', y: '58%' },
+        { id: 'S-05', name: 'Vinicola Lanchellotti', temp: 29.5, humidity: 21, status: 'normal', x: '43%', y: '22%' },
+        { id: 'S-06', name: 'Cruz Cruzeiro do Sul', temp: 32.1, humidity: 23, status: 'normal', x: '65%', y: '48%' },
       ]);
-      setAlerts([{ id: 1, location: 'Encosta Leste (Setor 2)', time: 'Há 5 min', message: 'Vento constante de 18km/h detectado.' }]);
+      setAlerts([{ id: 1, location: 'Mirante Serra da Paulista', time: 'Há 5 min', message: 'Vento constante de 18km/h detectado.' }]);
       setSimStep(0);
     }
   };
@@ -206,30 +258,32 @@ export default function MonitoringPage() {
               }}>
 
                 {/* ZONAS DE CALOR (MÚLTIPLOS FOCOS ESPALHADOS) */}
-                {/* Foco 1: Pico Norte (Aparece a partir do Passo 1) */}
+                {/* ZONAS DE CALOR (MÚLTIPLOS FOCOS ESPALHADOS) */}
+                
+                {/* Foco 1: Setor Norte (Cobre a Vinícola e o Mirante) */}
                 {simStep >= 1 && (
                   <div style={{
-                    position: 'absolute', top: '5%', left: '30%', width: '350px', height: '350px',
-                    background: 'radial-gradient(circle, rgba(249,115,22,0.45) 0%, transparent 70%)',
-                    borderRadius: '50%', animation: 'pulse 2s infinite'
+                    position: 'absolute', top: '17%', left: '52%', width: '450px', height: '250px',
+                    background: 'radial-gradient(ellipse, rgba(239,68,68,0.55) 0%, transparent 70%)',
+                    borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'pulse 2s infinite'
                   }} />
                 )}
-
-                {/* Foco 2: Vale Central (Aparece a partir do Passo 2) */}
+                
+                {/* Foco 2: Setor Central (Cobre a Capelinha e o Bambu Amarelo) */}
                 {simStep >= 2 && (
                   <div style={{
-                    position: 'absolute', top: '40%', left: '15%', width: '280px', height: '280px',
-                    background: 'radial-gradient(circle, rgba(239,68,68,0.55) 0%, transparent 70%)',
-                    borderRadius: '50%', animation: 'pulse 2.5s infinite'
+                    position: 'absolute', top: '52%', left: '35%', width: '380px', height: '380px',
+                    background: 'radial-gradient(circle, rgba(249,115,22,0.5) 0%, transparent 70%)',
+                    borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'pulse 2.5s infinite'
                   }} />
                 )}
 
-                {/* Foco 3: Mirante Sul (Aparece a partir do Passo 3) */}
+                {/* Foco 3: Setor Sul/Leste (Cobre a Pedra Balão e a Cruz Cruzeiro) */}
                 {simStep >= 3 && (
                   <div style={{
-                    position: 'absolute', top: '50%', left: '50%', width: '400px', height: '400px',
-                    background: 'radial-gradient(circle, rgba(239,68,68,0.35) 0%, transparent 70%)',
-                    borderRadius: '50%', animation: 'pulse 3s infinite'
+                    position: 'absolute', top: '65%', left: '60%', width: '450px', height: '400px',
+                    background: 'radial-gradient(ellipse, rgba(239,68,68,0.45) 0%, transparent 70%)',
+                    borderRadius: '50%', transform: 'translate(-50%, -50%)', animation: 'pulse 3s infinite'
                   }} />
                 )}
 
