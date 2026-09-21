@@ -162,9 +162,7 @@ export default function MonitoringPage() {
         </div>
         <nav className="dash-nav">
           <Link to="#" className="dash-nav-item active">📡 Monitoramento</Link>
-          <Link to="#" className="dash-nav-item">📊 Relatórios de IA</Link>
           <Link to="#" className="dash-nav-item">🌡️ Rede de Sensores</Link>
-          <Link to="#" className="dash-nav-item">⚙️ Configurações</Link>
         </nav>
         <div style={{ padding: '24px' }}>
           <Link to="/" style={{ color: '#a1a1aa', fontSize: '12px', textDecoration: 'none' }}>
